@@ -14,9 +14,40 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Nelmio\ApiDocBundle\Annotation\Security;
+use Swagger\Annotations as SWG;
 
 class BackendTestController extends AbstractController
 {
+    // /**
+    //   * @Route("/api/backend_test", name="app_backend_test", methods={"POST"})
+    //  * @Operation(
+    //  *     summary="Summary of your endpoint",
+    //  *     @SWG\Parameter(
+    //  *         name="inspector_name",
+    //  *         in="query",
+    //  *         type="string",
+    //  *         description="Three names are avaible in database : First Inspector, Second Inspector, Third Inspector> every of them have diferect location."
+    //  *     ),
+    //  * @SWG\Parameter(
+    //  *         name="job_title",
+    //  *         in="query",
+    //  *         type="string",
+    //  *         description="Three jobs are avaible in database : First Job Title, Second Job Title, Third Job Title"
+    //  *     ),
+    //  * @SWG\Parameter(
+    //  *         name="comment",
+    //  *         in="query",
+    //  *         type="text",
+    //  *         description="Write a feedback"
+    //  *     ),
+    //  *     @SWG\Response(
+    //  *         response=200,
+    //  *         description="Success"
+    //  *     ),
+    //  *     @Security(name="Bearer")
+    //  * )
+    //  */
     #[Route('/backend_test', name: 'app_backend_test', methods: 'POST')]
     public function index(ManagerRegistry $doctrine, Request $request): JsonResponse
     {
@@ -56,6 +87,9 @@ class BackendTestController extends AbstractController
 
         $findSchedule = $entityManager->getRepository(Schedules::class)->find($schedule->getId());
 
+        if (!$request->query->get('comment')) {
+            throw $this->createNotFoundException('Please add a comment!');
+        }
         // create new assessment
         $assessment = new Assessments;
         $assessment->setSchedule($findSchedule);

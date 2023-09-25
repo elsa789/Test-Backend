@@ -13,6 +13,7 @@
         "doctrine/orm": "^2.16",
         "friendsofsymfony/rest-bundle": "^3.5",
         "jms/serializer-bundle": "^5.3",
+        "nelmio/api-doc-bundle": "^4.12",
         "symfony/console": "6.3.*",
         "symfony/dotenv": "6.3.*",
         "symfony/flex": "^2",
